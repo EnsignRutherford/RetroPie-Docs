@@ -1,6 +1,6 @@
 ## Memory Split
 
-Raspberry Pi systems use a shared memory architecture, allocating memory for GPU (2d, 3d and video) and CPU tasks. It is possible to manually set this allocation, however there is typically no reason to adjust it as the defaults are correct. As per the [official documentation](https://www.raspberrypi.org/documentation/configuration/config-txt/memory.md):
+Raspberry Pi systems use a shared memory architecture, allocating memory for GPU (2d, 3d and video) and CPU tasks. It is possible to manually set this allocation, however there is typically no reason to adjust it as the defaults are correct. As per the [official documentation](https://www.raspberrypi.org/documentation/computers/config_txt.html#memory-options):
 > Unlike GPU's found on x86 machines, where increasing memory can improve 3D performance, the architecture of the VideoCore means **there is no performance advantage from specifying values larger than is necessary, and in fact it can harm performance**.
 
 ### Adjusting the Memory Split
@@ -21,11 +21,7 @@ On the Raspberry Pi 4 the 3D component of the GPU has its own memory management 
 
 #### Kodi
 
-The FKMS driver still utilises the split for certain media tasks, e.g., hardware video decoding for 4K (HEVC) video. If you have issues with 4K videos in Kodi, try
-~~~~
-gpu_mem=320
-~~~~
-More information [here](https://raspberrypi.org/forums/viewtopic.php?f=66&t=251645).
+Previously, the FKMS driver still utilised the memory split for certain media tasks, e.g., hardware video decoding for 4K (HEVC) video. If you have issues with 4K videos in Kodi, upgrade to the latest kernel/firmware, for example via _RetroPie-Setup -> Configuration / Tools -> raspbiantools -> Upgrade Raspbian packages_.
 
 ### Raspberry Pi 0-3
 

@@ -19,6 +19,7 @@
 - [How can I recover my RetroPie after I enabled the experimental OpenGL driver?](FAQ#how-can-i-recover-my-retropie-after-enabling-the-desktop-opengl-driver)
 - [How can I disable a USB device without disconnecting it?](FAQ#how-can-i-disable-a-usb-device-without-disconnecting-it)
 - [Why Emulationstation doesn't start anymore after an update?](FAQ#why-emulationstation-doesnt-start-automatically-after-an-update)
+- [My Xbox controller is not working properly with Moonlight Embedded/PPSSPP](#my-xbox-controller-is-not-working-properly-with-moonlight-embeddedppsspp)
 
 
 ### Why do some emulators not show up?
@@ -29,36 +30,33 @@ If the system still doesn't show up in Emulation Station, only emulators with RO
 
 ### Why can't I SSH as root anymore?
 
-The root password is disabled by default (as is the case for Raspbian and many other linux distros). 
+The `root` account password is disabled by default (as is the case for Raspberry Pi OS and many other Linux distros). To allow remote SSH access using the `root` account:
 
-before setting a root password, the following must be edited
+* Enable `root` login with SSH by editing the SSH configuration file. Run:
+    
+    `sudo nano /etc/ssh/sshd_config`
+    
+    The line 
 
-```sudo nano /etc/ssh/sshd_config```
+    `#PermitRootLogin without-password`
 
-look for 
+    should be changed to
 
-```#PermitRootLogin without-password```
+    ```PermitRootLogin yes```
 
-change it to
+    The file can be saved by typing `Ctrl+X` and confirming the changes.
 
-```PermitRootLogin yes```
+* Set a password for the `root` account. Run:
+   
+   `sudo passwd root`
+   
+   and pick a reasonable complex password for the account.
 
-then ctrl+x to save, 
 
-next set your root password:
+For more details about the `root` account and its usage, see:
 
-```
-sudo passwd root
- 
-```
-
-restart your Pi to register your changes
-
-see these posts for more details:
-
-https://www.raspberrypi.org/documentation/linux/usage/root.md
-
-http://elinux.org/R-Pi_Troubleshooting#I_don.27t_know_the_root_password
+* <https://www.raspberrypi.org/documentation/computers/using_linux.html#root-and-sudo>
+* <http://elinux.org/R-Pi_Troubleshooting#I_don.27t_know_the_root_password>
 
 ### Reset ownership/permissions of /home/pi/RetroPie roms
 
@@ -295,7 +293,7 @@ To recover from such a situation, there are 2 options:
 Insert the SD card back into your RetroPie system and start the system, without the OpenGL driver enabled.
  
  * Access your system via [SSH](SSH) and run `raspi-config` again to disable the OpenGL driver, then reboot the RetroPie system.  
-  **Note**: If you haven't previously enabled [SSH](SSH) access to the system, then use the instructions to enable SSH on a headless Raspbian system from  the [Raspbian site](https://www.raspberrypi.org/documentation/remote-access/ssh/):
+  **Note**: If you haven't previously enabled [SSH](SSH) access to the system, then use the instructions to enable SSH on a headless Raspberry Pi OS system from  the [Raspberry Pi site](https://www.raspberrypi.org/documentation/computers/remote-access.html#setting-up-an-ssh-server/):
  > For headless setup, SSH can be enabled by placing a file named ssh, without any extension, onto the boot partition of the SD card from another computer. When the Pi boots, it looks for the ssh file. If it is found, SSH is enabled and the file is deleted. The content of the file does not matter; it could contain text, or nothing at all.
 >
 > If you have loaded Raspbian onto a blank SD card, you will have two partitions. The first one, which is the smaller one, is the boot partition. Place the file into this one.
@@ -328,3 +326,21 @@ sudo raspi-config
 To fix the auto-login configuration, go to **3 Boot Options**, choose **Desktop/CLI** and finally choose the **Console Autologin** option. Go back to the main menu and choose <kbd>Finish</kbd> and Reboot your Pi. 
 
 After the reboot, Emulationstation should start automatically.
+
+### My Xbox controller is not working properly with Moonlight Embedded/PPSSPP
+
+Some applications like [Moonlight Embedded](https://github.com/moonlight-stream/moonlight-embedded) or emulators like [PPSSPP](https://ppsspp.org) expect the Xbox 360/One controllers to have the analog triggers (LT/RT) exposed as axis instead of buttons.
+
+RetroPie's `xpad` Xbox controller driver is configured to map the controller's LT/RT as buttons - insteads of axis - and this option makes the controller not working properly in applications that use SDL gamepad mappings.
+
+To solve the problem, one of the following solutions can be used:
+
+* uninstall the `xpad` driver, by running the RetroPie setup script and going to _Manage packages_ -> _Manage driver packages_. Select the `xpad` entry and then use the _Remove_ option.
+
+* configure the `xpad` driver's to retain the LT/RT original axis behavior. Edit the `/etc/modprobe.d/xpad.conf` file so it contains:
+
+   ````
+	 options xpad triggers_to_buttons=0
+	 ````
+
+After the modifications above, the controller _needs_ to be [re-configured](Controller-Configuration) again in EmulationStation.

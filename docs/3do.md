@@ -9,7 +9,7 @@ _The Panasonic 3do Real Multiplayer was a Home Video Game Console developed by t
 
 | Emulator | Rom Folder | Extension | BIOS |  Controller Config |
 | :---: | :---: | :---: | :---: | :---: |
-| [lr-opera](https://github.com/libretro/opera-libretro) | 3do  | .iso .cue | panafz10.bin | /opt/retropie/configs/3do/retroarch.cfg |
+| [lr-opera](https://github.com/libretro/opera-libretro) | 3do  | .chd .cue .iso .zip | panafz10.bin | /opt/retropie/configs/3do/retroarch.cfg |
 
 ## Emulator: [lr-opera](https://github.com/libretro/opera-libretro) (formerly known as `lr-4do`).
 
@@ -18,7 +18,7 @@ _The Panasonic 3do Real Multiplayer was a Home Video Game Console developed by t
 With the Odroid-XU4, performance has increased and made many games playable as of July 2018 when development was taken over by a newer developer. CPU threading being added for the CPU/GPU found in the XU4 continues to increase performance as of September 2018.
 
 ## ROMS
-Accepted File Extensions: **.iso** **.bin/cue**
+Accepted File Extensions: **.iso** **.bin/cue** **.chd** **.zip**
 
 Place your 3do ROMs in
 ```
